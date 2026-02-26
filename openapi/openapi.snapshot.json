@@ -4,10 +4,10 @@
     "title": "Know Your Agent API",
     "summary": "Identity & Permission Layer for Autonomous Agents",
     "description": "\n## Know Your Agent API\n\nIdentity & permission layer for autonomous agents.\n\n### Auth model (MVP)\nSensitive routes require `X-Workspace-Id` header. The request `workspace_id` must\nmatch this header, otherwise the API returns `WORKSPACE_MISMATCH`.\n\n`POST /workspaces` is a bootstrap route protected by `X-Bootstrap-Token`.\n\n### Error format\nBusiness errors are returned as:\n\n```json\n{\"detail\": {\"code\": \"SOME_CODE\", \"message\": \"Human readable message\"}}\n```\n\n### Main flow\n1. Create agent\n2. Create policy\n3. Bind policy to agent\n4. Request capability\n5. Verify signed action\n6. Query/export audit logs\n7. Check audit chain integrity\n",
-    "termsOfService": "https://github.com/know-your-agent/know-your-agent",
+    "termsOfService": "https://github.com/qurveai/know-your-agent",
     "contact": {
       "name": "Know Your Agent Maintainers",
-      "url": "https://github.com/know-your-agent/know-your-agent"
+      "url": "https://github.com/qurveai/know-your-agent"
     },
     "license": {
       "name": "MIT"
@@ -2495,6 +2495,6 @@
   ],
   "externalDocs": {
     "description": "Project documentation",
-    "url": "https://github.com/know-your-agent/know-your-agent"
+    "url": "https://github.com/qurveai/know-your-agent"
   }
 }

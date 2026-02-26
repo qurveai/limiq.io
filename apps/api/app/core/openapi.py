@@ -126,7 +126,7 @@ def install_custom_openapi(app: FastAPI) -> Callable[[], dict[str, Any]]:
 
         schema["externalDocs"] = {
             "description": "Project documentation",
-            "url": "https://github.com/know-your-agent/know-your-agent",
+            "url": "https://github.com/qurveai/know-your-agent",
         }
         schema.setdefault("info", {})["x-logo"] = {
             "url": "https://raw.githubusercontent.com/redocly/redoc/main/demo/logo.png",
