@@ -6,6 +6,7 @@ const BOOTSTRAP_TOKEN = process.env.KYA_BOOTSTRAP_TOKEN || ""
 const DEMO_POLICY_MAX_SPEND = Number(process.env.DEMO_POLICY_MAX_SPEND || "100")
 const ALLOW_AMOUNT = Number(process.env.DEMO_ALLOW_AMOUNT || "49")
 const DENY_AMOUNT = Number(process.env.DEMO_DENY_AMOUNT || "149")
+const DEMO_MODE = (process.env.DEMO_MODE || "both").toLowerCase()
 
 const ACTION_TYPE = "purchase.execute"
 const TARGET_SERVICE = "purchase-target"
@@ -63,11 +64,11 @@ function printStep(text) {
 }
 
 function printSuccess(text) {
-  console.log(`OK ${text}`)
+  console.log(`✅ ${text}`)
 }
 
 function printFailure(text) {
-  console.error(`FAIL ${text}`)
+  console.error(`❌ ${text}`)
 }
 
 async function run() {
@@ -89,7 +90,7 @@ async function run() {
     },
   )
   const workspaceId = workspace.id
-  printSuccess(`Workspace created: ${workspaceId}`)
+  printSuccess(`workspace created: ${workspaceId}`)
 
   const keys = generateKeys()
 
@@ -109,7 +110,7 @@ async function run() {
       "X-Actor-Id": "purchase-demo",
     },
   )
-  printSuccess(`Agent created: ${agent.id}`)
+  printSuccess(`agent created: ${agent.id}`)
 
   const policy = await postKya(
     "/policies",
@@ -128,7 +129,7 @@ async function run() {
       "X-Actor-Id": "purchase-demo",
     },
   )
-  printSuccess(`Policy created: ${policy.id}`)
+  printSuccess(`policy created: ${policy.id}`)
 
   const binding = await postKya(
     `/agents/${agent.id}/bind_policy`,
@@ -141,7 +142,7 @@ async function run() {
       "X-Actor-Id": "purchase-demo",
     },
   )
-  printSuccess(`Policy bound: ${binding.id}`)
+  printSuccess(`policy bound: ${binding.id}`)
 
   const capability = await postKya(
     "/capabilities/request",
@@ -159,63 +160,70 @@ async function run() {
       "X-Actor-Id": "purchase-demo",
     },
   )
-  printSuccess(`Capability issued: ${capability.capability_id}`)
+  printSuccess("capability issued")
 
-  const allowPayload = {
-    amount: ALLOW_AMOUNT,
-    currency: "USD",
-    merchant: "Demo Store",
-    order_ref: `allow-${randomSuffix()}`,
+  if (DEMO_MODE === "allow" || DEMO_MODE === "both") {
+    const allowPayload = {
+      amount: ALLOW_AMOUNT,
+      currency: "USD",
+      merchant: "Demo Store",
+      order_ref: `allow-${randomSuffix()}`,
+    }
+
+    const allowRequest = buildSignedRequest({
+      workspace_id: workspaceId,
+      agent_id: agent.id,
+      action_type: ACTION_TYPE,
+      target_service: TARGET_SERVICE,
+      payload: allowPayload,
+      capability_token: capability.token,
+      privateKeyBase64: keys.privateKeyBase64,
+      request_context: { source: "agent-demo", scenario: "ALLOW" },
+    })
+
+    const allowResp = await postTargetPurchase(allowRequest)
+    if (allowResp.status !== 200 || allowResp.data?.executed !== true) {
+      throw new Error(`ALLOW scenario failed: status=${allowResp.status} body=${JSON.stringify(allowResp.data)}`)
+    }
+
+    printSuccess("verify = ALLOW")
+    printSuccess("action executed")
   }
 
-  const allowRequest = buildSignedRequest({
-    workspace_id: workspaceId,
-    agent_id: agent.id,
-    action_type: ACTION_TYPE,
-    target_service: TARGET_SERVICE,
-    payload: allowPayload,
-    capability_token: capability.token,
-    privateKeyBase64: keys.privateKeyBase64,
-    request_context: { source: "agent-demo", scenario: "ALLOW" },
-  })
+  if (DEMO_MODE === "deny" || DEMO_MODE === "both") {
+    const denyPayload = {
+      amount: DENY_AMOUNT,
+      currency: "USD",
+      merchant: "Demo Store",
+      order_ref: `deny-${randomSuffix()}`,
+    }
 
-  const allowResp = await postTargetPurchase(allowRequest)
-  if (allowResp.status !== 200 || allowResp.data?.executed !== true) {
-    throw new Error(`ALLOW scenario failed: status=${allowResp.status} body=${JSON.stringify(allowResp.data)}`)
-  }
-  printSuccess("ALLOW verified and purchase executed")
+    const denyRequest = buildSignedRequest({
+      workspace_id: workspaceId,
+      agent_id: agent.id,
+      action_type: ACTION_TYPE,
+      target_service: TARGET_SERVICE,
+      payload: denyPayload,
+      capability_token: capability.token,
+      privateKeyBase64: keys.privateKeyBase64,
+      request_context: { source: "agent-demo", scenario: "DENY" },
+    })
 
-  const denyPayload = {
-    amount: DENY_AMOUNT,
-    currency: "USD",
-    merchant: "Demo Store",
-    order_ref: `deny-${randomSuffix()}`,
-  }
+    const denyResp = await postTargetPurchase(denyRequest)
+    if (denyResp.status !== 403) {
+      throw new Error(`DENY scenario failed: expected 403, got ${denyResp.status} body=${JSON.stringify(denyResp.data)}`)
+    }
 
-  const denyRequest = buildSignedRequest({
-    workspace_id: workspaceId,
-    agent_id: agent.id,
-    action_type: ACTION_TYPE,
-    target_service: TARGET_SERVICE,
-    payload: denyPayload,
-    capability_token: capability.token,
-    privateKeyBase64: keys.privateKeyBase64,
-    request_context: { source: "agent-demo", scenario: "DENY" },
-  })
+    const reasonCode = denyResp.data?.reason_code
+    if (reasonCode !== "SPEND_LIMIT_EXCEEDED") {
+      throw new Error(
+        `DENY scenario failed: expected reason_code=SPEND_LIMIT_EXCEEDED, got ${JSON.stringify(reasonCode)} body=${JSON.stringify(denyResp.data)}`,
+      )
+    }
 
-  const denyResp = await postTargetPurchase(denyRequest)
-  if (denyResp.status !== 403) {
-    throw new Error(`DENY scenario failed: expected 403, got ${denyResp.status} body=${JSON.stringify(denyResp.data)}`)
+    printSuccess("verify = DENY (reason=SPEND_LIMIT_EXCEEDED)")
   }
 
-  const reasonCode = denyResp.data?.reason_code
-  if (reasonCode !== "SPEND_LIMIT_EXCEEDED") {
-    throw new Error(
-      `DENY scenario failed: expected reason_code=SPEND_LIMIT_EXCEEDED, got ${JSON.stringify(reasonCode)} body=${JSON.stringify(denyResp.data)}`,
-    )
-  }
-
-  printSuccess("DENY verified and purchase blocked (SPEND_LIMIT_EXCEEDED)")
   printSuccess("Integration proof completed")
 }
 

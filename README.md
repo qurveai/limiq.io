@@ -99,6 +99,8 @@ Verify response:
 Guides:
 - `docs/API_GUIDE_V01.md`
 - `docs/OPENAPI_REDOC_V01.md`
+- `docs/why-kya.md`
+- `docs/quickstart.md`
 
 ## Dev Commands
 ```bash

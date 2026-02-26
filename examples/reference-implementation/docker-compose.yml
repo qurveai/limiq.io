@@ -1,0 +1,101 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: kya
+      POSTGRES_PASSWORD: kya
+      POSTGRES_DB: kya
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kya"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ../..
+      dockerfile: examples/reference-implementation/api.Dockerfile
+    environment:
+      APP_ENV: development
+      APP_PORT: 8000
+      POSTGRES_USER: kya
+      POSTGRES_PASSWORD: kya
+      POSTGRES_DB: kya
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      KYA_JWT_KID: demo-ed25519-key-1
+      KYA_WORKSPACE_BOOTSTRAP_TOKEN: dev-bootstrap-token
+      CORS_ALLOW_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+    command: >
+      sh -lc '
+        openssl genpkey -algorithm ed25519 -out /tmp/kya-private.pem >/dev/null 2>&1;
+        openssl pkey -in /tmp/kya-private.pem -pubout -out /tmp/kya-public.pem >/dev/null 2>&1;
+        export KYA_JWT_PRIVATE_KEY_PEM="$(cat /tmp/kya-private.pem)";
+        export KYA_JWT_PUBLIC_KEY_PEM="$(cat /tmp/kya-public.pem)";
+        cd /app/apps/api;
+        alembic upgrade head;
+        uvicorn app.main:app --host 0.0.0.0 --port 8000
+      '
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  purchase-target:
+    build:
+      context: ../..
+      dockerfile: examples/reference-implementation/purchase.Dockerfile
+    environment:
+      PORT: 3002
+      KYA_BASE_URL: http://api:8000
+    command: ["npm", "run", "dev"]
+    working_dir: /app/examples/purchase-target
+    ports:
+      - "3002:3002"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3002/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  agent-demo:
+    build:
+      context: ../..
+      dockerfile: examples/reference-implementation/purchase.Dockerfile
+    environment:
+      KYA_BASE_URL: http://api:8000
+      TARGET_BASE_URL: http://purchase-target:3002
+      KYA_BOOTSTRAP_TOKEN: dev-bootstrap-token
+      DEMO_POLICY_MAX_SPEND: 100
+      DEMO_ALLOW_AMOUNT: 49
+      DEMO_DENY_AMOUNT: 149
+    command: ["npm", "run", "demo"]
+    working_dir: /app/examples/purchase-target
+    depends_on:
+      api:
+        condition: service_healthy
+      purchase-target:
+        condition: service_healthy
+
