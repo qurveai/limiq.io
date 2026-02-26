@@ -1,4 +1,4 @@
-# Contributing to Know Your Agent
+# Contributing to Limiq.io
 
 Thanks for contributing.
 
@@ -27,8 +27,8 @@ pnpm install
 pnpm --filter playground dev
 pnpm --filter playground build
 pnpm --filter playground types:api
-pnpm --filter @kya/sdk-js test
-pnpm --filter @kya/sdk-js build
+pnpm --filter @limiq/sdk-js test
+pnpm --filter @limiq/sdk-js build
 bash scripts/examples_smoke.sh
 bash scripts/examples_purchase_smoke.sh
 python -m pip install -e "packages/sdk-python[dev]"
@@ -57,7 +57,7 @@ A contribution is ready when:
 - `make test` passes
 - `make verify-all` passes before merge for release-sensitive changes
 - `pnpm --filter playground build` passes (if frontend changed)
-- `pnpm --filter @kya/sdk-js test` passes (if SDK changed)
+- `pnpm --filter @limiq/sdk-js test` passes (if SDK changed)
 - `bash scripts/examples_smoke.sh` passes (if examples changed)
 - `bash scripts/examples_purchase_smoke.sh` passes (if purchase integration flow changed)
 - `pytest -q packages/sdk-python/tests` passes (if sdk-python changed)

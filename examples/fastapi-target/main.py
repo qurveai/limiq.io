@@ -16,7 +16,7 @@ class VerifyPayload(BaseModel):
     request_context: dict[str, object] = Field(default_factory=dict)
 
 
-app = FastAPI(title="KYA FastAPI Target Example")
+app = FastAPI(title="Limiq.io FastAPI Target Example")
 KYA_BASE_URL = os.getenv("KYA_BASE_URL", "http://localhost:8000")
 
 
@@ -46,20 +46,20 @@ async def purchase(data: VerifyPayload) -> dict[str, object]:
                 json=data.model_dump(),
             )
     except httpx.TimeoutException as exc:
-        raise HTTPException(status_code=504, detail={"error": "KYA verify timeout"}) from exc
+        raise HTTPException(status_code=504, detail={"error": "Limiq.io verify timeout"}) from exc
     except httpx.RequestError as exc:
-        raise HTTPException(status_code=502, detail={"error": "KYA verify unreachable"}) from exc
+        raise HTTPException(status_code=502, detail={"error": "Limiq.io verify unreachable"}) from exc
 
     verify_payload = _safe_json(verify_resp)
     if verify_resp.status_code >= 500:
         raise HTTPException(
             status_code=502,
-            detail={"error": "KYA verify upstream error", "upstream": verify_payload},
+            detail={"error": "Limiq.io verify upstream error", "upstream": verify_payload},
         )
     if verify_resp.status_code >= 400:
         raise HTTPException(
             status_code=verify_resp.status_code,
-            detail={"error": "KYA verify request rejected", "upstream": verify_payload},
+            detail={"error": "Limiq.io verify request rejected", "upstream": verify_payload},
         )
 
     decision = verify_payload.get("decision")

@@ -279,7 +279,7 @@ function App() {
         <header className="bg-grid rounded-xl border border-border/70 bg-card/60 p-6 backdrop-blur">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-semibold">KYA API Playground</h1>
+              <h1 className="text-3xl font-semibold">Limiq.io API Playground</h1>
               <p className="text-sm text-muted-foreground">
                 Internal test bench for backend flows. Uses live API responses and keeps the last
                 20 requests.

@@ -1,6 +1,10 @@
-from kya_sdk.canonical import canonicalize
-from kya_sdk.client import AsyncKyaClient, KyaClient, build_signed_request
-from kya_sdk.crypto import (
+from limiq_sdk.canonical import canonicalize
+from limiq_sdk.client import (
+    AsyncLimiqClient,
+    LimiqClient,
+    build_signed_request,
+)
+from limiq_sdk.crypto import (
     extract_capability_jti,
     generate_keys,
     sha256_hex,
@@ -16,6 +20,6 @@ __all__ = [
     "verify_signature",
     "extract_capability_jti",
     "build_signed_request",
-    "KyaClient",
-    "AsyncKyaClient",
+    "LimiqClient",
+    "AsyncLimiqClient",
 ]

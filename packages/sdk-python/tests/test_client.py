@@ -2,7 +2,7 @@ import asyncio
 
 import httpx
 
-from kya_sdk.client import AsyncKyaClient, KyaClient
+from limiq_sdk.client import AsyncLimiqClient, LimiqClient
 
 
 def _verify_payload() -> dict[str, object]:
@@ -31,7 +31,7 @@ def test_sync_client_verify_action() -> None:
             },
         )
 
-    sdk = KyaClient(
+    sdk = LimiqClient(
         base_url="http://example.test",
         workspace_id="workspace-1",
         transport=httpx.MockTransport(handler),
@@ -54,7 +54,7 @@ def test_async_client_verify_action() -> None:
             },
         )
 
-    sdk = AsyncKyaClient(
+    sdk = AsyncLimiqClient(
         base_url="http://example.test",
         workspace_id="workspace-1",
         transport=httpx.MockTransport(handler),

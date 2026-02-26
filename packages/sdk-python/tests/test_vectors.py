@@ -2,7 +2,7 @@ import json
 from hashlib import sha256
 from pathlib import Path
 
-from kya_sdk.canonical import canonicalize
+from limiq_sdk.canonical import canonicalize
 
 
 def test_shared_verify_vectors_match_python_sdk() -> None:

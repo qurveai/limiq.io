@@ -1,11 +1,11 @@
-# Know Your Agent (KYA)
+# Limiq.io
 
 Identity & Permission Layer for Autonomous Agents.
 
 Current status: `v0.x` MVP. APIs may evolve between minor releases.
 
-## What Is KYA
-KYA is an Identity & Permission Layer for autonomous agents.
+## What Is Limiq.io
+Limiq.io is an Identity & Permission Layer for autonomous agents.
 It gives API and SDK primitives to control, verify, and audit agent actions.
 
 ## Problem It Solves
@@ -15,7 +15,7 @@ In agent-native systems, you need deterministic answers to:
 - should this action be allowed right now?
 - can we audit and revoke safely?
 
-KYA provides these controls via identity, policy/capability checks, verification, and audit trail integrity.
+Limiq.io provides these controls via identity, policy/capability checks, verification, and audit trail integrity.
 
 ## What It Does
 - agent identity registry
@@ -99,7 +99,7 @@ Verify response:
 Guides:
 - `docs/API_GUIDE_V01.md`
 - `docs/OPENAPI_REDOC_V01.md`
-- `docs/why-kya.md`
+- `docs/why-limiq.md`
 - `docs/quickstart.md`
 
 ## Dev Commands
@@ -137,12 +137,12 @@ OPENAPI_SOURCE=url pnpm --filter playground types:api
 - key generation (Ed25519, base64)
 - canonicalization + signature helpers
 - verify request builder
-- lightweight KYA API client for capability + verify
+- lightweight Limiq.io API client for capability + verify
 
 Commands:
 ```bash
-pnpm --filter @kya/sdk-js test
-pnpm --filter @kya/sdk-js build
+pnpm --filter @limiq/sdk-js test
+pnpm --filter @limiq/sdk-js build
 ```
 
 Integration examples:

@@ -28,13 +28,13 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
-    title="Know Your Agent API",
+    title="Limiq.io API",
     summary="Identity & Permission Layer for Autonomous Agents",
     description=API_DESCRIPTION,
     version="0.5.0",
     terms_of_service="https://github.com/qurveai/know-your-agent",
     contact={
-        "name": "Know Your Agent Maintainers",
+        "name": "Limiq.io Maintainers",
         "url": "https://github.com/qurveai/know-your-agent",
     },
     license_info={"name": "Apache-2.0"},

@@ -14,8 +14,8 @@ and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - OSS governance baseline: `LICENSE` (MIT), `SECURITY.md`, `CONTRIBUTING.md`, `CHANGELOG.md`.
 - Workspace bootstrap endpoint (`POST /workspaces`) with `X-Bootstrap-Token` auth and `GET /workspaces/{id}`.
 - Internal playground (`apps/playground`): workspace management, dev signing helpers, API explorer.
-- SDK JS (`@kya/sdk-js`): `canonicalize`, `generateKeys`, `signAction`, `buildSignedRequest`, `KyaClient`.
-- SDK Python (`kya-sdk`): `canonicalize`, `generate_keys`, `sign_action`, `build_signed_request`, `KyaClient`, `AsyncKyaClient`.
+- SDK JS (`@limiq/sdk-js`): `canonicalize`, `generateKeys`, `signAction`, `buildSignedRequest`, `LimiqClient`.
+- SDK Python (`limiq-sdk`): `canonicalize`, `generate_keys`, `sign_action`, `build_signed_request`, `LimiqClient`, `AsyncLimiqClient`.
 - Shared cross-language verify test vectors (`shared-test-vectors/verify/`), including non-ASCII key coverage.
 - Runnable integration examples: `examples/express-target`, `examples/fastapi-target`.
 - Reference integration example `examples/purchase-target` with full ALLOW/DENY demo script (`agent-demo.js`).

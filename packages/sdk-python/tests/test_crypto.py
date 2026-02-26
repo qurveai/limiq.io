@@ -1,7 +1,7 @@
 import base64
 
-from kya_sdk.client import build_signed_request
-from kya_sdk.crypto import (
+from limiq_sdk.client import build_signed_request
+from limiq_sdk.crypto import (
     extract_capability_jti,
     generate_keys,
     sign_action,

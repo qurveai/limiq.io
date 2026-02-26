@@ -6,8 +6,8 @@ from typing import Any
 
 from nacl.signing import SigningKey, VerifyKey
 
-from kya_sdk.canonical import canonicalize
-from kya_sdk.types import SignActionResult
+from limiq_sdk.canonical import canonicalize
+from limiq_sdk.types import SignActionResult
 
 
 def _b64_decode(value: str) -> bytes:

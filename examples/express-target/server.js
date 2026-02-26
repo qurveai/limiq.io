@@ -1,6 +1,6 @@
 import express from "express"
 
-import { KyaClient } from "@kya/sdk-js"
+import { LimiqClient } from "@limiq/sdk-js"
 
 const app = express()
 app.use(express.json())
@@ -39,7 +39,7 @@ app.post("/purchase", async (req, res) => {
   }
 
   try {
-    const client = new KyaClient({
+    const client = new LimiqClient({
       baseUrl: kyaBaseUrl,
       workspaceId: body.workspace_id,
     })

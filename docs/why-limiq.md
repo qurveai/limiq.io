@@ -1,4 +1,4 @@
-# Why KYA
+# Why Limiq.io
 
 AI agents can now trigger real-world actions: purchases, CRM writes, deployments.
 
@@ -13,8 +13,8 @@ Without a control gate, one bad call can:
 - push wrong data to your CRM,
 - trigger an unsafe deploy.
 
-## The KYA verify gate
-KYA adds one decision point before execution:
+## The Limiq.io verify gate
+Limiq.io adds one decision point before execution:
 
 `verify -> ALLOW or DENY`
 
@@ -27,4 +27,4 @@ On `DENY`, you get a reason code you can log and handle.
 - Audit trail: what happened and why
 - Revocation: stop an agent or capability immediately
 
-KYA is the trust layer between agent intent and production action.
+Limiq.io is the trust layer between agent intent and production action.

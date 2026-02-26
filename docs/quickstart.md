@@ -1,6 +1,6 @@
 # Quickstart (5 Minutes)
 
-Goal: run the KYA reference integration and see one ALLOW + one DENY decision.
+Goal: run the Limiq.io reference integration and see one ALLOW + one DENY decision.
 
 ## 1) Start services
 ```bash

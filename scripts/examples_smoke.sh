@@ -41,7 +41,7 @@ wait_for_url() {
 
 echo "[smoke] Build SDK JS"
 if command -v pnpm >/dev/null 2>&1; then
-  pnpm --dir "$ROOT_DIR" --filter @kya/sdk-js build
+  pnpm --dir "$ROOT_DIR" --filter @limiq/sdk-js build
 else
   npm --prefix "$SDK_DIR" run build
 fi

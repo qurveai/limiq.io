@@ -1,21 +1,21 @@
 # Example — Purchase Target (Integration Proof)
 
-Reference integration that protects a real business action (`POST /purchase`) with KYA verify.
+Reference integration that protects a real business action (`POST /purchase`) with Limiq.io verify.
 
 ## Goal
 Show a complete ALLOW + DENY flow in a few minutes:
-1. Bootstrap workspace/agent/policy/capability via KYA API.
+1. Bootstrap workspace/agent/policy/capability via Limiq.io API.
 2. Sign purchase actions.
 3. Call target endpoint.
-4. Target verifies with KYA before execution.
+4. Target verifies with Limiq.io before execution.
 
 ## Prerequisites
-- KYA API running on `http://localhost:8000`
+- Limiq.io API running on `http://localhost:8000`
 - `KYA_WORKSPACE_BOOTSTRAP_TOKEN` configured in API env
 - SDK JS built once:
 
 ```bash
-pnpm --filter @kya/sdk-js build
+pnpm --filter @limiq/sdk-js build
 ```
 
 ## Run target service
@@ -52,4 +52,4 @@ Expected output includes:
 - `POST /purchase`
 
 `POST /purchase` expects the same body shape as `POST /verify`.
-If KYA returns `DENY`, target returns `403` with `reason_code`.
+If Limiq.io returns `DENY`, target returns `403` with `reason_code`.

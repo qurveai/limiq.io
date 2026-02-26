@@ -1,9 +1,9 @@
 {
-  "name": "@kya/sdk-js",
+  "name": "@limiq/sdk-js",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Know Your Agent JavaScript SDK",
+  "description": "Limiq.io JavaScript SDK",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

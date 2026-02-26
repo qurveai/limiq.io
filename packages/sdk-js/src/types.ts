@@ -66,7 +66,7 @@ export type RequestCapabilityResponse = {
   expires_at: string
 }
 
-export type KyaClientOptions = {
+export type LimiqClientOptions = {
   baseUrl: string
   workspaceId: string
   fetchImpl?: typeof fetch

@@ -1,6 +1,6 @@
-# @kya/sdk-js (WIP)
+# @limiq/sdk-js (WIP)
 
-JavaScript SDK for Know Your Agent.
+JavaScript SDK for Limiq.io.
 
 ## Scope (MVP)
 - deterministic canonical JSON for verify envelope
@@ -11,17 +11,17 @@ JavaScript SDK for Know Your Agent.
 
 ## Install (workspace)
 ```bash
-pnpm --filter @kya/sdk-js test
-pnpm --filter @kya/sdk-js build
+pnpm --filter @limiq/sdk-js test
+pnpm --filter @limiq/sdk-js build
 ```
 
 ## Usage
 ```ts
 import {
-  KyaClient,
+  LimiqClient,
   buildSignedRequest,
   generateKeys,
-} from "@kya/sdk-js"
+} from "@limiq/sdk-js"
 
 const keys = generateKeys()
 
@@ -36,7 +36,7 @@ const verifyPayload = buildSignedRequest({
   privateKeyBase64: keys.privateKeyBase64,
 })
 
-const client = new KyaClient({
+const client = new LimiqClient({
   baseUrl: "http://localhost:8000",
   workspaceId: "<workspace_uuid>",
 })

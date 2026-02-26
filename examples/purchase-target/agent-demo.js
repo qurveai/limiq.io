@@ -1,4 +1,4 @@
-import { buildSignedRequest, generateKeys } from "@kya/sdk-js"
+import { buildSignedRequest, generateKeys } from "@limiq/sdk-js"
 
 const KYA_BASE_URL = process.env.KYA_BASE_URL || "http://localhost:8000"
 const TARGET_BASE_URL = process.env.TARGET_BASE_URL || "http://localhost:3002"
@@ -76,7 +76,7 @@ async function run() {
     throw new Error("Missing KYA_BOOTSTRAP_TOKEN env var (required for POST /workspaces)")
   }
 
-  printStep(`KYA API: ${KYA_BASE_URL}`)
+  printStep(`Limiq.io API: ${KYA_BASE_URL}`)
   printStep(`Target API: ${TARGET_BASE_URL}`)
 
   const workspace = await postKya(

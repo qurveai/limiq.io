@@ -2,11 +2,11 @@ from typing import Any
 
 import httpx
 
-from kya_sdk.crypto import extract_capability_jti, sign_action
-from kya_sdk.types import CapabilityRequestBody, CapabilityResponse, VerifyRequestBody, VerifyResponse
+from limiq_sdk.crypto import extract_capability_jti, sign_action
+from limiq_sdk.types import CapabilityRequestBody, CapabilityResponse, VerifyRequestBody, VerifyResponse
 
 
-class KyaClient:
+class LimiqClient:
     def __init__(
         self,
         *,
@@ -41,7 +41,7 @@ class KyaClient:
             return response.json()
 
 
-class AsyncKyaClient:
+class AsyncLimiqClient:
     def __init__(
         self,
         *,

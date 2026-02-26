@@ -1,6 +1,6 @@
-# kya-sdk (Python)
+# limiq-sdk (Python)
 
-Minimal Python SDK for Know Your Agent.
+Minimal Python SDK for Limiq.io.
 
 ## Features (v0.1)
 - deterministic canonicalization (backend-compatible)

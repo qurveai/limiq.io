@@ -7,11 +7,11 @@ export {
   signAction,
   verifySignature,
 } from "./crypto.js"
-export { buildSignedRequest, KyaClient } from "./client.js"
+export { buildSignedRequest, LimiqClient } from "./client.js"
 export type {
   BuildSignedRequestInput,
   GenerateKeysResult,
-  KyaClientOptions,
+  LimiqClientOptions,
   RequestCapabilityInput,
   RequestCapabilityResponse,
   SignActionInput,

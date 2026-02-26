@@ -1,7 +1,7 @@
 import { extractCapabilityJti, signAction } from "./crypto.js"
 import type {
   BuildSignedRequestInput,
-  KyaClientOptions,
+  LimiqClientOptions,
   RequestCapabilityInput,
   RequestCapabilityResponse,
   VerifyRequestBody,
@@ -38,12 +38,12 @@ async function parseJsonResponse<T>(response: Response): Promise<T> {
   return body as T
 }
 
-export class KyaClient {
+export class LimiqClient {
   private readonly baseUrl: string
   private readonly workspaceId: string
   private readonly fetchImpl: typeof fetch
 
-  constructor(options: KyaClientOptions) {
+  constructor(options: LimiqClientOptions) {
     this.baseUrl = normalizeBaseUrl(options.baseUrl)
     this.workspaceId = options.workspaceId
     this.fetchImpl = options.fetchImpl ?? fetch

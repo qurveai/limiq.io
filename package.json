@@ -1,5 +1,5 @@
 {
-  "name": "know-your-agent",
+  "name": "limiq-io",
   "private": true,
   "version": "0.5.0",
   "description": "Identity & Permission Layer for Autonomous Agents",
@@ -11,7 +11,7 @@
     "dev:playground": "pnpm --filter playground dev",
     "build:playground": "pnpm --filter playground build",
     "types:playground": "pnpm --filter playground types:api",
-    "build:sdk-js": "pnpm --filter @kya/sdk-js build",
-    "test:sdk-js": "pnpm --filter @kya/sdk-js test"
+    "build:sdk-js": "pnpm --filter @limiq/sdk-js build",
+    "test:sdk-js": "pnpm --filter @limiq/sdk-js test"
   }
 }

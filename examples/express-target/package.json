@@ -1,5 +1,5 @@
 {
-  "name": "kya-express-target",
+  "name": "limiq-express-target",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "node server.js"
   },
   "dependencies": {
-    "@kya/sdk-js": "file:../../packages/sdk-js",
+    "@limiq/sdk-js": "file:../../packages/sdk-js",
     "express": "^4.21.2"
   }
 }

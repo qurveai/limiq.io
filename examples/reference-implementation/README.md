@@ -1,6 +1,6 @@
 # Reference Implementation (Golden Path)
 
-This is the copy/paste integration package for KYA.
+This is the copy/paste integration package for Limiq.io.
 
 ## Commands
 ```bash

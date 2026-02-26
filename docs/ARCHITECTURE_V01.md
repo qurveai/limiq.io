@@ -1,7 +1,7 @@
-# KYA Architecture (V01)
+# Limiq.io Architecture (V01)
 
 ## Overview
-Know Your Agent provides an identity and permission layer for autonomous agents.
+Limiq.io provides an identity and permission layer for autonomous agents.
 
 Core responsibilities:
 - register agent identities

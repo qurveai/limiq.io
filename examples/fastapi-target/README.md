@@ -1,9 +1,9 @@
 # Example — FastAPI Target (Runnable)
 
-Simple target service that verifies actions with KYA before executing business logic.
+Simple target service that verifies actions with Limiq.io before executing business logic.
 
 ## Prerequisites
-- API KYA running on `http://localhost:8000`
+- Limiq.io API running on `http://localhost:8000`
 - Python 3.12+
 
 ## Run
@@ -24,4 +24,4 @@ Server starts on `http://localhost:8001`.
 - `POST /purchase`
 
 `POST /purchase` expects the same payload as `POST /verify`.
-If KYA returns `DENY`, target returns `403`.
+If Limiq.io returns `DENY`, target returns `403`.

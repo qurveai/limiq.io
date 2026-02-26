@@ -1,4 +1,4 @@
-# KYA API Guide (V01)
+# Limiq.io API Guide (V01)
 
 ## Start Here
 Interactive docs:
@@ -8,6 +8,18 @@ Interactive docs:
 
 Detailed ReDoc/OpenAPI navigation guide:
 - `docs/OPENAPI_REDOC_V01.md`
+
+## Playground (Internal Dev Tool)
+The repository includes `apps/playground` to test all API flows from a UI.
+
+Quick commands:
+- `pnpm install`
+- `pnpm --filter playground types:api`
+- `pnpm --filter playground dev`
+
+Notes:
+- `types:api` reads `openapi/openapi.snapshot.json` by default (CI-safe).
+- Use `OPENAPI_SOURCE=url pnpm --filter playground types:api` to generate types from a live API.
 
 ## Authentication (MVP)
 Sensitive endpoints require header:

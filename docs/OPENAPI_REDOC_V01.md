@@ -1,9 +1,18 @@
-# KYA — OpenAPI & ReDoc Guide (V01)
+# Limiq.io — OpenAPI & ReDoc Guide (V01)
 
 ## URLs
 - OpenAPI JSON: `http://localhost:8000/openapi.json`
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
+
+## Playground & OpenAPI Types
+`apps/playground` relies on OpenAPI-generated TypeScript types.
+
+Commands:
+- `pnpm --filter playground types:api` (from `openapi/openapi.snapshot.json`)
+- `OPENAPI_SOURCE=url pnpm --filter playground types:api` (from live API)
+
+Use this when API schemas change to keep playground requests/responses aligned.
 
 ## Authentication Header (MVP)
 Routes sensibles utilisent:

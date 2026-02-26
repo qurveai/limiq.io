@@ -126,10 +126,10 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Test SDK JS
-        run: pnpm --filter @kya/sdk-js test
+        run: pnpm --filter @limiq/sdk-js test
 
       - name: Build SDK JS
-        run: pnpm --filter @kya/sdk-js build
+        run: pnpm --filter @limiq/sdk-js build
 
   examples_smoke:
     runs-on: ubuntu-latest

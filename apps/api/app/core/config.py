@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
-    app_name: str = "know-your-agent-api"
+    app_name: str = "limiq-io-api"
     app_env: str = "development"
     app_port: int = 8000
 

@@ -1,4 +1,4 @@
-# KYA API
+# Limiq.io API
 
 ## Quickstart
 1. `cp .env.example .env`

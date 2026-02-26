@@ -36,7 +36,7 @@ OPENAPI_TAGS_METADATA = [
 ]
 
 API_DESCRIPTION = """
-## Know Your Agent API
+## Limiq.io API
 
 Identity & permission layer for autonomous agents.
 
@@ -130,7 +130,7 @@ def install_custom_openapi(app: FastAPI) -> Callable[[], dict[str, Any]]:
         }
         schema.setdefault("info", {})["x-logo"] = {
             "url": "https://raw.githubusercontent.com/redocly/redoc/main/demo/logo.png",
-            "altText": "Know Your Agent",
+            "altText": "Limiq.io",
         }
 
         app.openapi_schema = schema

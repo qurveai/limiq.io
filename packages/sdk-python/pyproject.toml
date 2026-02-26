@@ -3,9 +3,9 @@ requires = ["hatchling>=1.25.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "kya-sdk"
+name = "limiq-sdk"
 version = "0.1.0"
-description = "Know Your Agent Python SDK"
+description = "Limiq.io Python SDK"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -19,7 +19,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/kya_sdk"]
+packages = ["src/limiq_sdk"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
