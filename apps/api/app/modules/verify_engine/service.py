@@ -1,3 +1,4 @@
+import logging
 from hashlib import sha256
 from typing import Literal
 from uuid import UUID
@@ -22,6 +23,8 @@ from app.modules.verify_engine.policy_eval import (
     scopes_allow_action,
 )
 from app.schemas.verify import VerifyRequest, VerifyResponse
+
+logger = logging.getLogger("kya.verify_engine")
 
 
 def _decision(
@@ -109,7 +112,17 @@ def verify_action(db: Session, payload: VerifyRequest) -> VerifyResponse:
             agent_id=payload.agent_id,
             event_data={"reason": ReasonCode.CAPABILITY_EXPIRED},
         )
+    except (jwt.DecodeError, jwt.InvalidTokenError):
+        return _decision(
+            db,
+            workspace_id=payload.workspace_id,
+            decision="DENY",
+            reason_code=ReasonCode.CAPABILITY_INVALID,
+            agent_id=payload.agent_id,
+            event_data={"reason": ReasonCode.CAPABILITY_INVALID},
+        )
     except Exception:
+        logger.error("unexpected_error_decoding_capability_token", exc_info=True)
         return _decision(
             db,
             workspace_id=payload.workspace_id,

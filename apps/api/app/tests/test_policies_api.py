@@ -58,3 +58,36 @@ def test_create_policy_workspace_mismatch_denied(client: TestClient, workspace_i
 
     assert response.status_code == 403
     assert response.json()["detail"]["code"] == "WORKSPACE_MISMATCH"
+
+
+def test_create_policy_rejects_unknown_top_level_field(
+    client: TestClient, workspace_id: str
+) -> None:
+    payload = _policy_payload(workspace_id)
+    payload["policy_json"] = {
+        "allowed_tools": ["purchase"],
+        "resource_scopes": ["workspace:abc"],
+        "spend": {"currency": "EUR", "max_per_tx": 50},
+        "unknown_key": True,
+    }
+
+    response = client.post("/policies", json=payload)
+
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "POLICY_SCHEMA_INVALID"
+
+
+def test_create_policy_rejects_unknown_nested_spend_field(
+    client: TestClient, workspace_id: str
+) -> None:
+    payload = _policy_payload(workspace_id)
+    payload["policy_json"] = {
+        "allowed_tools": ["purchase"],
+        "resource_scopes": ["workspace:abc"],
+        "spend": {"currency": "EUR", "max_per_trx": 50},
+    }
+
+    response = client.post("/policies", json=payload)
+
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "POLICY_SCHEMA_INVALID"

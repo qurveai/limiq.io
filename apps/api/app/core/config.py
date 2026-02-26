@@ -32,6 +32,14 @@ class Settings(BaseSettings):
 
     rate_limit_window_seconds: int = 60
     rate_limit_redis_key_ttl_seconds: int = 70
+    rate_limit_redis_fail_open: bool = False
+
+    db_pool_size: int = 5
+    db_max_overflow: int = 10
+    db_pool_recycle_seconds: int = 1800
+
+    log_level: str = "INFO"
+
     audit_export_max_rows: int = 10000
     cors_allow_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 

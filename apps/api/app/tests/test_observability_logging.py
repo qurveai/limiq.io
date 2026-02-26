@@ -133,3 +133,11 @@ def test_observability_logs_include_correlation_fields(
     assert getattr(integrity_record, "workspace_id", None) == workspace_id
     assert getattr(integrity_record, "status", None) in {"OK", "BROKEN", "PARTIAL"}
     assert getattr(integrity_record, "checked_count", None) is not None
+
+    http_logs = [
+        record for record in caplog.records if getattr(record, "event_name", None) == "http_request"
+    ]
+    assert http_logs
+    assert any(getattr(record, "path", None) == "/verify" for record in http_logs)
+    assert all(getattr(record, "status", None) is not None for record in http_logs)
+    assert all(getattr(record, "latency_ms", None) is not None for record in http_logs)

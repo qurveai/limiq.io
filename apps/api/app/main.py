@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.api.routes.agents import router as agents_router
 from app.api.routes.audit import router as audit_router
@@ -16,6 +17,7 @@ from app.core.config import settings
 from app.core.jwt_keys import validate_jwt_key_config
 from app.core.openapi import API_DESCRIPTION, install_custom_openapi
 from app.observability.logging import configure_logging
+from app.observability.request_logging import request_logging_middleware
 
 
 @asynccontextmanager
@@ -52,6 +54,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(BaseHTTPMiddleware, dispatch=request_logging_middleware)
 
 app.include_router(health_router)
 app.include_router(workspaces_router)

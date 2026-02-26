@@ -33,7 +33,13 @@ def _extract_jti_unverified(token: str) -> str | None:
             },
             algorithms=["EdDSA", "HS256", "RS256"],
         )
+    except jwt.DecodeError:
+        # Used for logging/metrics only; not security-critical for decisions.
+        logger.debug("jti_extraction_failed", exc_info=True)
+        return None
     except Exception:
+        # Used for logging/metrics only; not security-critical for decisions.
+        logger.debug("jti_extraction_failed", exc_info=True)
         return None
 
     jti = claims.get("jti")

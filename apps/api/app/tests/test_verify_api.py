@@ -5,6 +5,7 @@ from typing import cast
 from uuid import UUID
 
 import jwt
+import pytest
 from fastapi.testclient import TestClient
 from nacl.signing import SigningKey
 from sqlalchemy import select
@@ -564,3 +565,51 @@ def test_verify_workspace_mismatch_denied(client: TestClient, workspace_id: str)
 
     assert response.status_code == 403
     assert response.json()["detail"]["code"] == "WORKSPACE_MISMATCH"
+
+
+def test_verify_deny_capability_invalid_on_unexpected_decode_error(
+    client: TestClient,
+    workspace_id: str,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    public_key_b64, signing_key = _generate_agent_keypair()
+    agent_id = _create_agent(client, workspace_id, public_key_b64)
+    _create_policy_and_bind(client, workspace_id, agent_id)
+    issued = _issue_capability(client, workspace_id, agent_id, ["purchase"])
+
+    payload = {"amount": 18, "currency": "EUR", "tool": "purchase"}
+    signature = _sign_request(
+        signing_key=signing_key,
+        workspace_id=workspace_id,
+        agent_id=agent_id,
+        action_type="purchase",
+        target_service="stripe_proxy",
+        payload=payload,
+        capability_jti=str(issued["jti"]),
+    )
+
+    def _raise_unexpected(_: str) -> dict[str, object]:
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(
+        "app.modules.verify_engine.service.decode_capability_token",
+        _raise_unexpected,
+    )
+
+    response = client.post(
+        "/verify",
+        json={
+            "workspace_id": workspace_id,
+            "agent_id": agent_id,
+            "action_type": "purchase",
+            "target_service": "stripe_proxy",
+            "payload": payload,
+            "signature": signature,
+            "capability_token": issued["token"],
+        },
+        headers=_auth_headers(workspace_id),
+    )
+
+    assert response.status_code == 200
+    assert response.json()["decision"] == "DENY"
+    assert response.json()["reason_code"] == "CAPABILITY_INVALID"

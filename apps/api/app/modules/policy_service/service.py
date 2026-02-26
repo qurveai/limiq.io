@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from pydantic import ValidationError
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -8,6 +9,7 @@ from app.core.errors import raise_http_error
 from app.models.policy import Policy
 from app.models.workspace import Workspace
 from app.modules.audit_log.service import append_audit_event
+from app.modules.policy_service.schema import PolicySchema
 from app.schemas.policy import PolicyCreateRequest
 
 
@@ -15,6 +17,11 @@ def create_policy(db: Session, payload: PolicyCreateRequest) -> Policy:
     workspace = db.scalar(select(Workspace).where(Workspace.id == payload.workspace_id))
     if workspace is None:
         raise_http_error(404, "WORKSPACE_NOT_FOUND", "Workspace not found")
+
+    try:
+        PolicySchema.model_validate(payload.policy_json)
+    except ValidationError as exc:
+        raise_http_error(422, "POLICY_SCHEMA_INVALID", str(exc))
 
     policy = Policy(
         workspace_id=payload.workspace_id,

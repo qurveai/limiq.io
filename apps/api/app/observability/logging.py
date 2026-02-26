@@ -3,6 +3,8 @@ import logging
 from datetime import UTC, datetime
 from typing import Any
 
+from app.core.config import settings
+
 _LOGGING_CONFIGURED = False
 
 
@@ -16,8 +18,11 @@ class JsonLogFormatter(logging.Formatter):
         "reason_code",
         "audit_event_id",
         "status",
+        "latency_ms",
         "checked_count",
         "broken_at_event_id",
+        "action_type",
+        "configured_level",
         "path",
         "method",
     )
@@ -44,7 +49,19 @@ def configure_logging() -> None:
         return
 
     root_logger = logging.getLogger()
-    root_logger.setLevel(logging.INFO)
+    level_name = settings.log_level.upper()
+    level = getattr(logging, level_name, None)
+    if not isinstance(level, int):
+        logging.getLogger("kya.logging").warning(
+            "invalid_log_level_fallback",
+            extra={
+                "event_name": "invalid_log_level_fallback",
+                "configured_level": settings.log_level,
+            },
+        )
+        level = logging.INFO
+
+    root_logger.setLevel(level)
 
     handler = logging.StreamHandler()
     handler.setFormatter(JsonLogFormatter())
