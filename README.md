@@ -4,6 +4,19 @@ Identity & Permission Layer for Autonomous Agents.
 
 Current status: `v0.x` MVP. APIs may evolve between minor releases.
 
+## What Is KYA
+KYA is an Identity & Permission Layer for autonomous agents.
+It gives API and SDK primitives to control, verify, and audit agent actions.
+
+## Problem It Solves
+In agent-native systems, you need deterministic answers to:
+- who is acting?
+- what is this agent allowed to do?
+- should this action be allowed right now?
+- can we audit and revoke safely?
+
+KYA provides these controls via identity, policy/capability checks, verification, and audit trail integrity.
+
 ## What It Does
 - agent identity registry
 - policy binding
@@ -37,6 +50,23 @@ This prints `KYA_JWT_PRIVATE_KEY_PEM` and `KYA_JWT_PUBLIC_KEY_PEM` values to pas
 
 API base URL:
 - `http://localhost:8000`
+
+## Verify Flow
+1. Create workspace + agent.
+2. Create and bind policy.
+3. Request capability token.
+4. Sign action envelope (canonical JSON + SHA-256 + Ed25519).
+5. Call `POST /verify`.
+6. Execute only when decision is `ALLOW`.
+
+Verify response:
+```json
+{
+  "decision": "ALLOW|DENY",
+  "reason_code": "string|null",
+  "audit_event_id": "uuid"
+}
+```
 
 ## API Docs
 - OpenAPI JSON: `http://localhost:8000/openapi.json`
@@ -76,6 +106,7 @@ Use live API instead:
 OPENAPI_SOURCE=url pnpm --filter playground types:api
 ```
 
+## SDK Usage
 ## SDK JS (MVP)
 `packages/sdk-js` provides:
 - key generation (Ed25519, base64)
@@ -119,7 +150,13 @@ python -m pip install -e "packages/sdk-python[dev]"
 pytest -q packages/sdk-python/tests
 ```
 
-## Architecture
+## Architecture Overview
+- `apps/api`: verify core, policy, capability, audit, revocation
+- `packages/sdk-js`, `packages/sdk-python`: signing/client SDKs
+- `examples/`: runnable target integrations
+- `apps/playground`: internal API test bench
+
+Detailed architecture:
 - `docs/ARCHITECTURE_V01.md`
 
 ## Contributing
